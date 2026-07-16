@@ -55,7 +55,7 @@ export default function Footer() {
                 { icon: Youtube, href: '#' },
                 { icon: Linkedin, href: '#' },
               ].map((social, index) => (
-                <a
+                
                   key={index}
                   href={social.href}
                   className="p-2.5 bg-slate-800 rounded-lg hover:bg-slate-700 transition-colors"
@@ -96,13 +96,24 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Support</h4>
             <ul className="space-y-3">
-              {footerLinks.support.map((link) => (
-                <li key={link}>
-                  <a href="#contact" className="text-slate-400 hover:text-white transition-colors text-sm">
-                    {link}
-                  </a>
-                </li>
-              ))}
+              {footerLinks.support.map((link) =>
+                link === 'FAQs' ? (
+                  <li key={link}>
+                    <Link
+                      to="/faq"
+                      className="text-slate-400 hover:text-white transition-colors text-sm"
+                    >
+                      {link}
+                    </Link>
+                  </li>
+                ) : (
+                  <li key={link}>
+                    <a href="#contact" className="text-slate-400 hover:text-white transition-colors text-sm">
+                      {link}
+                    </a>
+                  </li>
+                )
+              )}
             </ul>
           </div>
         </div>
