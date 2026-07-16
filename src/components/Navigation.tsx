@@ -42,7 +42,7 @@ export default function Navigation() {
             className="flex items-center group"
           >
             <img
-              src="/logo-blue.png"
+              src={isDark || (!isScrolled && isHomePage) ? '/logo-white.png' : '/logo-blue.png'}
               alt="Travellier"
               className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
