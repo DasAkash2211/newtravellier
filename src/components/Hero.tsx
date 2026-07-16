@@ -32,7 +32,7 @@ export default function Hero() {
       <div className="absolute inset-0">
         <img
           src="https://images.pexels.com/photos/62623/wing-plane-sky-air-62623.jpeg?auto=compress&cs=tinysrgb&w=1920"
-          alt="Sky view from plane"
+          
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-slate-900/80" />
