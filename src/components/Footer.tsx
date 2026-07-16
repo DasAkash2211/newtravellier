@@ -25,6 +25,14 @@ const footerLinks = {
   ],
 };
 
+const socialLinks = [
+  { icon: Facebook, href: '#' },
+  { icon: Twitter, href: '#' },
+  { icon: Instagram, href: '#' },
+  { icon: Youtube, href: '#' },
+  { icon: Linkedin, href: '#' },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-slate-900 text-white pt-12 pb-6">
@@ -45,21 +53,18 @@ export default function Footer() {
 
             {/* Social Links merged here */}
             <div className="flex items-center gap-3">
-              {[
-                { icon: Facebook, href: '#' },
-                { icon: Twitter, href: '#' },
-                { icon: Instagram, href: '#' },
-                { icon: Youtube, href: '#' },
-                { icon: Linkedin, href: '#' },
-              ].map((social, index) => (
-                
-                  key={index}
-                  href={social.href}
-                  className="p-2 bg-slate-800 rounded-lg hover:bg-sky-500 transition-colors"
-                >
-                  <social.icon className="w-4 h-4" />
-                </a>
-              ))}
+              {socialLinks.map((social, index) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={index}
+                    href={social.href}
+                    className="p-2 bg-slate-800 rounded-lg hover:bg-sky-500 transition-colors"
+                  >
+                    <Icon className="w-4 h-4" />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
