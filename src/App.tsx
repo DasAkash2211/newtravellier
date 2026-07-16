@@ -24,6 +24,10 @@ import AdminVRVideos from './pages/admin/AdminVRVideos';
 import AdminNewsletter from './pages/admin/AdminNewsletter';
 import AdminSettings from './pages/admin/AdminSettings';
 import FAQ from './pages/FAQ';
+import CancellationPolicy from './pages/CancellationPolicy';
+import RefundPolicy from './pages/RefundPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
+
 function HomePage() {
   return (
     <>
