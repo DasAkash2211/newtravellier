@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Plane, Facebook, Twitter, Instagram, Youtube, Linkedin } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Youtube, Linkedin } from 'lucide-react';
 
 const footerLinks = {
   destinations: [
@@ -35,11 +35,12 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="p-2 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600">
-                <Plane className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold">Travellier</span>
+            <Link to="/" className="flex items-center mb-6">
+              <img
+                src="/logo-white.png"
+                alt="Travellier"
+                className="h-10 sm:h-11 w-auto object-contain"
+              />
             </Link>
             <p className="text-slate-400 mb-6 max-w-sm">
               Crafting unforgettable journeys since 2009. We connect travelers with extraordinary destinations across the globe.
