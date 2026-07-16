@@ -23,7 +23,7 @@ import AdminContacts from './pages/admin/AdminContacts';
 import AdminVRVideos from './pages/admin/AdminVRVideos';
 import AdminNewsletter from './pages/admin/AdminNewsletter';
 import AdminSettings from './pages/admin/AdminSettings';
-
+import FAQ from './pages/FAQ';
 function HomePage() {
   return (
     <>
