@@ -1,168 +1,90 @@
-import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const countries = [
-  { code: 'US', name: 'USA', flag: '🇺🇸' },
-  { code: 'GB', name: 'UK', flag: '🇬🇧' },
-  { code: 'FR', name: 'France', flag: '🇫🇷' },
-  { code: 'DE', name: 'Germany', flag: '🇩🇪' },
-  { code: 'IT', name: 'Italy', flag: '🇮🇹' },
-  { code: 'ES', name: 'Spain', flag: '🇪🇸' },
-  { code: 'PT', name: 'Portugal', flag: '🇵🇹' },
-  { code: 'NL', name: 'Netherlands', flag: '🇳🇱' },
-  { code: 'CH', name: 'Switzerland', flag: '🇨🇭' },
-  { code: 'AT', name: 'Austria', flag: '🇦🇹' },
-  { code: 'GR', name: 'Greece', flag: '🇬🇷' },
-  { code: 'TR', name: 'Turkey', flag: '🇹🇷' },
-  { code: 'JP', name: 'Japan', flag: '🇯🇵' },
-  { code: 'CN', name: 'China', flag: '🇨🇳' },
-  { code: 'KR', name: 'South Korea', flag: '🇰🇷' },
-  { code: 'TH', name: 'Thailand', flag: '🇹🇭' },
-  { code: 'VN', name: 'Vietnam', flag: '🇻🇳' },
-  { code: 'ID', name: 'Indonesia', flag: '🇮🇩' },
-  { code: 'PH', name: 'Philippines', flag: '🇵🇭' },
-  { code: 'MY', name: 'Malaysia', flag: '🇲🇾' },
-  { code: 'SG', name: 'Singapore', flag: '🇸🇬' },
-  { code: 'IN', name: 'India', flag: '🇮🇳' },
-  { code: 'AE', name: 'UAE', flag: '🇦🇪' },
-  { code: 'QA', name: 'Qatar', flag: '🇶🇦' },
-  { code: 'EG', name: 'Egypt', flag: '🇪🇬' },
-  { code: 'ZA', name: 'South Africa', flag: '🇿🇦' },
-  { code: 'KE', name: 'Kenya', flag: '🇰🇪' },
-  { code: 'TZ', name: 'Tanzania', flag: '🇹🇿' },
-  { code: 'MA', name: 'Morocco', flag: '🇲🇦' },
-  { code: 'AU', name: 'Australia', flag: '🇦🇺' },
-  { code: 'NZ', name: 'New Zealand', flag: '🇳🇿' },
-  { code: 'BR', name: 'Brazil', flag: '🇧🇷' },
-  { code: 'AR', name: 'Argentina', flag: '🇦🇷' },
-  { code: 'PE', name: 'Peru', flag: '🇵🇪' },
-  { code: 'MX', name: 'Mexico', flag: '🇲🇽' },
-  { code: 'CA', name: 'Canada', flag: '🇨🇦' },
-  { code: 'IS', name: 'Iceland', flag: '🇮🇸' },
-  { code: 'SE', name: 'Sweden', flag: '🇸🇪' },
-  { code: 'NO', name: 'Norway', flag: '🇳🇴' },
-  { code: 'FI', name: 'Finland', flag: '🇫🇮' },
-  { code: 'MV', name: 'Maldives', flag: '🇲🇻' },
-  { code: 'NP', name: 'Nepal', flag: '🇳🇵' },
-  { code: 'LK', name: 'Sri Lanka', flag: '🇱🇰' },
-  { code: 'KH', name: 'Cambodia', flag: '🇰🇭' },
-  { code: 'HR', name: 'Croatia', flag: '🇭🇷' },
-  { code: 'CZ', name: 'Czech Republic', flag: '🇨🇿' },
-  { code: 'HU', name: 'Hungary', flag: '🇭🇺' },
-  { code: 'PL', name: 'Poland', flag: '🇵🇱' },
-  { code: 'IE', name: 'Ireland', flag: '🇮🇪' },
-  { code: 'BE', name: 'Belgium', flag: '🇧🇪' },
+const continents = [
+  {
+    name: 'Asia',
+    image:
+      'https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=600&q=80',
+    query: 'asia',
+  },
+  {
+    name: 'Europe',
+    image:
+      'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=600&q=80',
+    query: 'europe',
+  },
+  {
+    name: 'Africa',
+    image:
+      'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=600&q=80',
+    query: 'africa',
+  },
+  {
+    name: 'North America',
+    image:
+      'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?auto=format&fit=crop&w=600&q=80',
+    query: 'north-america',
+  },
+  {
+    name: 'South America',
+    image:
+      'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=600&q=80',
+    query: 'south-america',
+  },
+  {
+    name: 'Australia & Oceania',
+    image:
+      'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&w=600&q=80',
+    query: 'australia-oceania',
+  },
+  {
+    name: 'Antarctica',
+    image:
+      'https://images.unsplash.com/photo-1551009175-15bdf9dcb580?auto=format&fit=crop&w=600&q=80',
+    query: 'antarctica',
+  },
 ];
 
 export default function CountryFlags() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section
-      id="destinations"
-      ref={sectionRef}
-      className="py-24 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-900 overflow-hidden"
-    >
+    <section className="py-20 bg-slate-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 rounded-full text-sm font-medium mb-4">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-sky-500/10 text-sky-400 text-sm font-medium mb-5">
             Global Destinations
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-            Explore the World
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            From tropical paradises to ancient wonders, we connect you to destinations across every continent.
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4">Explore the World</h2>
+          <p className="text-slate-400 max-w-2xl mx-auto">
+            From tropical paradises to ancient wonders, we connect you to destinations
+            across every continent.
           </p>
         </div>
 
-        {/* Marquee Container */}
-        <div className="relative">
-          {/* Gradient Overlays */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-slate-50 to-transparent dark:from-slate-900 z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent dark:from-slate-900 z-10 pointer-events-none" />
-
-          {/* First Row - Left to Right */}
-          <div
-            className={`flex gap-6 mb-6 transition-all duration-1000 ${
-              isVisible ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              animation: isVisible ? 'marqueeLeft 30s linear infinite' : 'none',
-            }}
-          >
-            {[...countries.slice(0, 25), ...countries.slice(0, 25)].map((country, index) => (
-              <div
-                key={`row1-${index}`}
-                className="flex-shrink-0 group"
-              >
-                <div className="flex flex-col items-center p-4 rounded-2xl bg-white dark:bg-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-slate-100 dark:border-slate-700 min-w-[100px]">
-                  <span className="text-4xl mb-2 transform group-hover:scale-125 transition-transform duration-300">
-                    {country.flag}
-                  </span>
-                  <span className="text-sm font-medium text-slate-600 dark:text-slate-300 text-center">
-                    {country.name}
-                  </span>
-                </div>
+        {/* Continent Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+          {continents.map((continent) => (
+            <Link
+              key={continent.name}
+              to={`/#tours?continent=${continent.query}`}
+              className="group relative overflow-hidden rounded-2xl aspect-[4/3] block"
+            >
+              <img
+                src={continent.image}
+                alt={continent.name}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent" />
+              <div className="absolute inset-0 flex items-end p-4">
+                <h3 className="font-semibold text-white text-base sm:text-lg">
+                  {continent.name}
+                </h3>
               </div>
-            ))}
-          </div>
-
-          {/* Second Row - Right to Left */}
-          <div
-            className={`flex gap-6 transition-all duration-1000 ${
-              isVisible ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              animation: isVisible ? 'marqueeRight 35s linear infinite' : 'none',
-            }}
-          >
-            {[...countries.slice(25), ...countries.slice(25)].map((country, index) => (
-              <div
-                key={`row2-${index}`}
-                className="flex-shrink-0 group"
-              >
-                <div className="flex flex-col items-center p-4 rounded-2xl bg-white dark:bg-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-slate-100 dark:border-slate-700 min-w-[100px]">
-                  <span className="text-4xl mb-2 transform group-hover:scale-125 transition-transform duration-300">
-                    {country.flag}
-                  </span>
-                  <span className="text-sm font-medium text-slate-600 dark:text-slate-300 text-center">
-                    {country.name}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+              <div className="absolute inset-0 border border-white/0 group-hover:border-sky-500/60 rounded-2xl transition-colors" />
+            </Link>
+          ))}
         </div>
       </div>
-
-      <style>{`
-        @keyframes marqueeLeft {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes marqueeRight {
-          0% { transform: translateX(-50%); }
-          100% { transform: translateX(0); }
-        }
-      `}</style>
     </section>
   );
 }
