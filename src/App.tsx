@@ -44,7 +44,6 @@ function HomePage() {
     </>
   );
 }
-
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   if (loading) {
@@ -59,7 +58,6 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
   return <>{children}</>;
 }
-
 function App() {
   return (
     <ThemeProvider>
@@ -87,6 +85,10 @@ function App() {
               />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/vr" element={<VRExperience />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+              <Route path="/refund-policy" element={<RefundPolicy />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route
                 path="/admin"
                 element={
@@ -110,5 +112,4 @@ function App() {
     </ThemeProvider>
   );
 }
-
 export default App;
