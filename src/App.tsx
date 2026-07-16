@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navigation from './components/Navigation';
+import InvitationPopup from './components/InvitationPopup';
 import Hero from './components/Hero';
 import CatchyBanner from './components/CatchyBanner';
 import CountryFlags from './components/CountryFlags';
@@ -26,6 +27,7 @@ import AdminSettings from './pages/admin/AdminSettings';
 function HomePage() {
   return (
     <>
+      <InvitationPopup />
       <Hero />
       <CatchyBanner />
       <CountryFlags />
