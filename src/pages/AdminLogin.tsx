@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Plane, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminLogin() {
   const { signIn, signUp } = useAuth();
+  const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,7 +29,11 @@ export default function AdminLogin() {
       }
     } else {
       const { error } = await signIn(email, password);
-      if (error) setError(error);
+      if (error) {
+        setError(error);
+      } else {
+        navigate('/admin', { replace: true });
+      }
     }
     setLoading(false);
   };
