@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navigation from './components/Navigation';
-import InvitationPopup from './components/InvitationPopup';
 import Hero from './components/Hero';
 import CatchyBanner from './components/CatchyBanner';
 import CountryFlags from './components/CountryFlags';
@@ -23,15 +22,10 @@ import AdminContacts from './pages/admin/AdminContacts';
 import AdminVRVideos from './pages/admin/AdminVRVideos';
 import AdminNewsletter from './pages/admin/AdminNewsletter';
 import AdminSettings from './pages/admin/AdminSettings';
-import FAQ from './pages/FAQ';
-import CancellationPolicy from './pages/CancellationPolicy';
-import RefundPolicy from './pages/RefundPolicy';
-import TermsAndConditions from './pages/TermsAndConditions';
 
 function HomePage() {
   return (
     <>
-      <InvitationPopup />
       <Hero />
       <CatchyBanner />
       <CountryFlags />
@@ -44,6 +38,7 @@ function HomePage() {
     </>
   );
 }
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   if (loading) {
@@ -58,6 +53,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
   return <>{children}</>;
 }
+
 function App() {
   return (
     <ThemeProvider>
@@ -85,10 +81,6 @@ function App() {
               />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/vr" element={<VRExperience />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/cancellation-policy" element={<CancellationPolicy />} />
-              <Route path="/refund-policy" element={<RefundPolicy />} />
-              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route
                 path="/admin"
                 element={
@@ -112,4 +104,5 @@ function App() {
     </ThemeProvider>
   );
 }
+
 export default App;
