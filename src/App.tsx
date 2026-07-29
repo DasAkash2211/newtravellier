@@ -22,6 +22,8 @@ import AdminContacts from './pages/admin/AdminContacts';
 import AdminVRVideos from './pages/admin/AdminVRVideos';
 import AdminNewsletter from './pages/admin/AdminNewsletter';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminTravelUpdates from './pages/admin/AdminTravelUpdates';
+import TravelUpdates from './pages/TravelUpdates';
 
 function HomePage() {
   return (
@@ -82,6 +84,16 @@ function App() {
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/vr" element={<VRExperience />} />
               <Route
+                path="/updates"
+                element={
+                  <>
+                    <Navigation />
+                    <TravelUpdates />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
                 path="/admin"
                 element={
                   <ProtectedRoute>
@@ -95,6 +107,7 @@ function App() {
                 <Route path="testimonials" element={<AdminTestimonials />} />
                 <Route path="contacts" element={<AdminContacts />} />
                 <Route path="newsletter" element={<AdminNewsletter />} />
+                <Route path="travel-updates" element={<AdminTravelUpdates />} />
                 <Route path="settings" element={<AdminSettings />} />
               </Route>
             </Routes>
