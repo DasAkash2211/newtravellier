@@ -11,6 +11,7 @@ import {
   Menu,
   Users,
   Video,
+  Newspaper,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -21,6 +22,7 @@ const navItems = [
   { name: 'Testimonials', path: '/admin/testimonials', icon: MessageSquare },
   { name: 'Contacts', path: '/admin/contacts', icon: Mail },
   { name: 'Newsletter', path: '/admin/newsletter', icon: Users },
+  { name: 'Travel Updates', path: '/admin/travel-updates', icon: Newspaper },
   { name: 'Settings', path: '/admin/settings', icon: Settings },
 ];
 
