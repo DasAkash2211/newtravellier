@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Plane, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 export default function Navigation() {
@@ -21,6 +21,7 @@ export default function Navigation() {
     { name: 'Home', href: '/' },
     { name: 'Tours', href: '/#tours' },
     { name: 'Destinations', href: '/#destinations' },
+    { name: 'Travel Updates', href: '/updates' },
     { name: 'About', href: '/#about' },
     { name: 'Contact', href: '/#contact' },
   ];
@@ -39,30 +40,50 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-20">
           <Link
             to="/"
-            className="flex items-center group"
+            className="flex items-center gap-2 group"
           >
-            <img
-              src={isDark || (!isScrolled && isHomePage) ? '/logo-white.png' : '/logo-blue.png'}
-              alt="Travellier"
-              className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-            />
+            <div className="relative p-2 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+              <Plane className="w-6 h-6 text-white transform group-hover:-rotate-12 transition-transform duration-300" />
+            </div>
+            <span className={`text-2xl font-bold tracking-tight ${
+              isScrolled || !isHomePage
+                ? 'text-slate-900 dark:text-white'
+                : 'text-white'
+            }`}>
+              Travellier
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className={`relative text-sm font-medium transition-colors duration-300 group ${
-                  isScrolled || !isHomePage
-                    ? 'text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400'
-                    : 'text-white/90 hover:text-white'
-                }`}
-              >
-                {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300" />
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.href.startsWith('/#') || link.href === '/' ? (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`relative text-sm font-medium transition-colors duration-300 group ${
+                    isScrolled || !isHomePage
+                      ? 'text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400'
+                      : 'text-white/90 hover:text-white'
+                  }`}
+                >
+                  {link.name}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300" />
+                </a>
+              ) : (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className={`relative text-sm font-medium transition-colors duration-300 group ${
+                    isScrolled || !isHomePage
+                      ? 'text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400'
+                      : 'text-white/90 hover:text-white'
+                  }`}
+                >
+                  {link.name}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300" />
+                </Link>
+              )
+            )}
           </div>
 
           <div className="flex items-center gap-4">
@@ -110,16 +131,27 @@ export default function Navigation() {
         }`}
       >
         <div className="px-4 py-4 space-y-2 bg-white dark:bg-slate-900 border-t dark:border-slate-800">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-4 py-3 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-            >
-              {link.name}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith('/#') || link.href === '/' ? (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-4 py-3 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link
+                key={link.name}
+                to={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-4 py-3 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+              >
+                {link.name}
+              </Link>
+            )
+          )}
           <Link
             to="/#tours"
             onClick={() => setIsMobileMenuOpen(false)}
