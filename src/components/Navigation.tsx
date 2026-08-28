@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Plane, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import logoWhite from '../assets/logo_white.png'; // adjust path/extension to match your file
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,6 +28,9 @@ export default function Navigation() {
   ];
 
   const isHomePage = location.pathname === '/';
+  // Same condition already driving the white nav text — show the white
+  // logo wherever that text is white (hero/transparent, or dark mode).
+  const showWhiteLogo = (!isScrolled && isHomePage) || isDark;
 
   return (
     <nav
@@ -42,9 +46,17 @@ export default function Navigation() {
             to="/"
             className="flex items-center gap-2 group"
           >
-            <div className="relative p-2 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-              <Plane className="w-6 h-6 text-white transform group-hover:-rotate-12 transition-transform duration-300" />
-            </div>
+            {showWhiteLogo ? (
+              <img
+                src={logoWhite}
+                alt="Travellier"
+                className="h-9 w-auto transition-transform duration-300 group-hover:scale-105"
+              />
+            ) : (
+              <div className="relative p-2 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <Plane className="w-6 h-6 text-white transform group-hover:-rotate-12 transition-transform duration-300" />
+              </div>
+            )}
             <span className={`text-2xl font-bold tracking-tight ${
               isScrolled || !isHomePage
                 ? 'text-slate-900 dark:text-white'
@@ -57,7 +69,7 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) =>
               link.href.startsWith('/#') || link.href === '/' ? (
-                <a
+                
                   key={link.name}
                   href={link.href}
                   className={`relative text-sm font-medium transition-colors duration-300 group ${
@@ -133,7 +145,7 @@ export default function Navigation() {
         <div className="px-4 py-4 space-y-2 bg-white dark:bg-slate-900 border-t dark:border-slate-800">
           {navLinks.map((link) =>
             link.href.startsWith('/#') || link.href === '/' ? (
-              <a
+              
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
