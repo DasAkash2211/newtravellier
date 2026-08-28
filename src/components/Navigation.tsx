@@ -54,7 +54,7 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) =>
               link.href.startsWith('/#') || link.href === '/' ? (
-                
+                <a
                   key={link.name}
                   href={link.href}
                   className={`relative text-sm font-medium transition-colors duration-300 group ${
@@ -130,7 +130,7 @@ export default function Navigation() {
         <div className="px-4 py-4 space-y-2 bg-white dark:bg-slate-900 border-t dark:border-slate-800">
           {navLinks.map((link) =>
             link.href.startsWith('/#') || link.href === '/' ? (
-              
+              <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
