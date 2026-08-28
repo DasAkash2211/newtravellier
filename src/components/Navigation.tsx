@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Plane, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import logoWhite from '../assets/logo-white.png';
-import logoBlue from '../assets/logo-blue.png';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -44,11 +42,16 @@ export default function Navigation() {
             to="/"
             className="flex items-center gap-2 group"
           >
-            <img
-              src={isDark ? logoWhite : logoBlue}
-              alt="Travellier"
-              className="h-10 w-auto transition-opacity duration-300 group-hover:opacity-90"
-            />
+            <div className="relative p-2 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+              <Plane className="w-6 h-6 text-white transform group-hover:-rotate-12 transition-transform duration-300" />
+            </div>
+            <span className={`text-2xl font-bold tracking-tight ${
+              isScrolled || !isHomePage
+                ? 'text-slate-900 dark:text-white'
+                : 'text-white'
+            }`}>
+              Travellier
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
