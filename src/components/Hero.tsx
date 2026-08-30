@@ -23,6 +23,93 @@ export default function Hero() {
     { icon: Calendar, value: '15+', label: 'Years Experience' },
   ];
 
+  // 10 tours for the sliding hero card
+  const tours = [
+    {
+      title: 'Bali Paradise Escape',
+      country: 'Indonesia',
+      price: '₹1,08,000',
+      rating: 5,
+      image: 'https://images.pexels.com/photos/2161467/pexels-photo-2161467.jpeg?auto=compress&cs=tinysrgb&w=600',
+    },
+    {
+      title: 'Swiss Alps Adventure',
+      country: 'Switzerland',
+      price: '₹2,45,000',
+      rating: 5,
+      image: 'https://images.pexels.com/photos/312839/pexels-photo-312839.jpeg?auto=compress&cs=tinysrgb&w=600',
+    },
+    {
+      title: 'Maldives Getaway',
+      country: 'Maldives',
+      price: '₹1,85,000',
+      rating: 5,
+      image: 'https://images.pexels.com/photos/1483053/pexels-photo-1483053.jpeg?auto=compress&cs=tinysrgb&w=600',
+    },
+    {
+      title: 'Japan Culture Trail',
+      country: 'Japan',
+      price: '₹1,95,000',
+      rating: 4,
+      image: 'https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg?auto=compress&cs=tinysrgb&w=600',
+    },
+    {
+      title: 'Iceland Ring Road',
+      country: 'Iceland',
+      price: '₹2,15,000',
+      rating: 5,
+      image: 'https://images.pexels.com/photos/1146708/pexels-photo-1146708.jpeg?auto=compress&cs=tinysrgb&w=600',
+    },
+    {
+      title: 'Egypt Nile Cruise',
+      country: 'Egypt',
+      price: '₹1,35,000',
+      rating: 4,
+      image: 'https://images.pexels.com/photos/71241/pyramids-of-giza-egypt-pyramids-ancient-71241.jpeg?auto=compress&cs=tinysrgb&w=600',
+    },
+    {
+      title: 'Machu Picchu Trek',
+      country: 'Peru',
+      price: '₹2,05,000',
+      rating: 5,
+      image: 'https://images.pexels.com/photos/2539403/pexels-photo-2539403.jpeg?auto=compress&cs=tinysrgb&w=600',
+    },
+    {
+      title: 'Santorini Sunset',
+      country: 'Greece',
+      price: '₹1,65,000',
+      rating: 5,
+      image: 'https://images.pexels.com/photos/1010657/pexels-photo-1010657.jpeg?auto=compress&cs=tinysrgb&w=600',
+    },
+    {
+      title: 'Dubai Desert Safari',
+      country: 'UAE',
+      price: '₹95,000',
+      rating: 4,
+      image: 'https://images.pexels.com/photos/1467300/pexels-photo-1467300.jpeg?auto=compress&cs=tinysrgb&w=600',
+    },
+    {
+      title: 'New Zealand Fjords',
+      country: 'New Zealand',
+      price: '₹2,35,000',
+      rating: 5,
+      image: 'https://images.pexels.com/photos/1006965/pexels-photo-1006965.jpeg?auto=compress&cs=tinysrgb&w=600',
+    },
+  ];
+
+  const [activeTour, setActiveTour] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setActiveTour((prev) => (prev + 1) % tours.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isPaused, tours.length]);
+
+  const currentTour = tours[activeTour];
+
   return (
     <section
       ref={heroRef}
@@ -153,30 +240,56 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Decorative Card Preview */}
+          {/* Decorative Card Preview - Sliding tours carousel (10 tours) */}
           <div className="hidden lg:block relative">
-            <div className="relative w-full max-w-md mx-auto">
+            <div
+              className="relative w-full max-w-md mx-auto"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+            >
               {/* Main feature card */}
-              <div className="relative bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 shadow-2xl transform hover:scale-105 transition-transform duration-500 animate-float">
-                <img
-                  src="https://images.pexels.com/photos/2161467/pexels-photo-2161467.jpeg?auto=compress&cs=tinysrgb&w=600"
-                  alt="Bali Paradise"
-                  className="w-full h-48 object-cover rounded-2xl mb-4"
-                />
-                <h3 className="text-white font-bold text-xl mb-2">Bali Paradise Escape</h3>
+              <div className="relative bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 shadow-2xl transform hover:scale-105 transition-transform duration-500 animate-float overflow-hidden">
+                <div className="relative w-full h-48 rounded-2xl mb-4 overflow-hidden">
+                  {tours.map((tour, index) => (
+                    <img
+                      key={tour.title}
+                      src={tour.image}
+                      alt={tour.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+                      style={{ opacity: index === activeTour ? 1 : 0 }}
+                    />
+                  ))}
+                </div>
+                <h3 className="text-white font-bold text-xl mb-2 transition-all duration-500">
+                  {currentTour.title}
+                </h3>
                 <div className="flex items-center gap-2 text-white/70 text-sm">
                   <MapPin className="w-4 h-4" />
-                  <span>Indonesia</span>
+                  <span>{currentTour.country}</span>
                 </div>
                 <div className="mt-4 flex items-center justify-between">
-                  <div className="text-emerald-400 text-2xl font-bold">₹1,08,000</div>
+                  <div className="text-emerald-400 text-2xl font-bold">{currentTour.price}</div>
                   <div className="flex items-center gap-1 text-amber-400">
-                    {[...Array(5)].map((_, i) => (
+                    {[...Array(currentTour.rating)].map((_, i) => (
                       <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                     ))}
                   </div>
+                </div>
+
+                {/* Slide indicator dots */}
+                <div className="mt-4 flex items-center justify-center gap-1.5">
+                  {tours.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setActiveTour(index)}
+                      aria-label={`Show tour ${index + 1}`}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        index === activeTour ? 'w-5 bg-sky-400' : 'w-1.5 bg-white/30 hover:bg-white/50'
+                      }`}
+                    />
+                  ))}
                 </div>
               </div>
 
