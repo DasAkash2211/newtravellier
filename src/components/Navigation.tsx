@@ -379,22 +379,24 @@ export default function Navigation() {
       {/* "Want to Travel" modal */}
       {isWantToTravelOpen && (
         <div
-          className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[60] overflow-y-auto"
           role="dialog"
           aria-modal="true"
           aria-labelledby="want-to-travel-title"
         >
           {/* backdrop */}
           <div
-            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
             onClick={closeWantToTravel}
           />
 
-          {/* modal card */}
-          <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 shadow-2xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8">
+          {/* centering wrapper — scrolls as a whole on short viewports */}
+          <div className="relative min-h-full flex items-center justify-center p-4 py-8">
+            {/* modal card — caps its own height and scrolls internally if content is tall */}
+            <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-slate-900 shadow-2xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8">
             <button
               onClick={closeWantToTravel}
-              className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="sticky float-right -mt-2 -mr-2 top-0 p-1.5 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               aria-label="Close"
             >
               <X className="w-5 h-5" />
@@ -521,6 +523,7 @@ export default function Navigation() {
                 </form>
               </>
             )}
+            </div>
           </div>
         </div>
       )}
