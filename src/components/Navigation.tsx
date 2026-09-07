@@ -8,6 +8,14 @@ export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const [isWantToTravelOpen, setIsWantToTravelOpen] = useState(false);
+  const [wantToTravelForm, setWantToTravelForm] = useState({
+    firstName: '',
+    lastName: '',
+    mobile: '',
+    email: '',
+  });
+  const [wantToTravelStatus, setWantToTravelStatus] = useState('idle'); // idle | submitting | success | error
   const { isDark, toggleTheme } = useTheme();
   const location = useLocation();
   const servicesRef = useRef(null);
@@ -29,6 +37,18 @@ export default function Navigation() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Lock background scroll while the "Want to Travel" modal is open
+  useEffect(() => {
+    if (isWantToTravelOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isWantToTravelOpen]);
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -52,6 +72,33 @@ export default function Navigation() {
   ];
 
   const isHomePage = location.pathname === '/';
+
+  const closeWantToTravel = () => {
+    setIsWantToTravelOpen(false);
+    setWantToTravelStatus('idle');
+    setWantToTravelForm({ firstName: '', lastName: '', mobile: '', email: '' });
+  };
+
+  const handleWantToTravelChange = (e) => {
+    const { name, value } = e.target;
+    setWantToTravelForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleWantToTravelSubmit = async (e) => {
+    e.preventDefault();
+    setWantToTravelStatus('submitting');
+    try {
+      // TODO: wire this up to the actual lead-capture endpoint.
+      // await fetch('/api/leads/want-to-travel', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(wantToTravelForm),
+      // });
+      setWantToTravelStatus('success');
+    } catch (err) {
+      setWantToTravelStatus('error');
+    }
+  };
 
   return (
     <nav
@@ -175,7 +222,7 @@ export default function Navigation() {
             )}
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <button
               onClick={toggleTheme}
               className={`p-2 rounded-full transition-all duration-300 ${
@@ -190,6 +237,17 @@ export default function Navigation() {
               ) : (
                 <Moon className="w-5 h-5" />
               )}
+            </button>
+
+            <button
+              onClick={() => setIsWantToTravelOpen(true)}
+              className={`hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-full border transition-all duration-300 ${
+                isScrolled || !isHomePage
+                  ? 'border-sky-500 text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-slate-800'
+                  : 'border-white/60 text-white hover:bg-white/10'
+              }`}
+            >
+              Want to Travel
             </button>
 
             <Link
@@ -216,7 +274,7 @@ export default function Navigation() {
       {/* Mobile menu */}
       <div
         className={`md:hidden transition-all duration-300 overflow-hidden ${
-          isMobileMenuOpen ? 'max-h-[32rem] overflow-y-auto' : 'max-h-0'
+          isMobileMenuOpen ? 'max-h-[36rem] overflow-y-auto' : 'max-h-0'
         }`}
       >
         <div className="px-4 py-4 space-y-2 bg-white dark:bg-slate-900 border-t dark:border-slate-800">
@@ -298,6 +356,16 @@ export default function Navigation() {
             )
           )}
 
+          <button
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              setIsWantToTravelOpen(true);
+            }}
+            className="block w-full px-4 py-3 border border-sky-500 text-sky-600 dark:text-sky-400 text-center rounded-lg"
+          >
+            Want to Travel
+          </button>
+
           <Link
             to="/#tours"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -307,6 +375,155 @@ export default function Navigation() {
           </Link>
         </div>
       </div>
+
+      {/* "Want to Travel" modal */}
+      {isWantToTravelOpen && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="want-to-travel-title"
+        >
+          {/* backdrop */}
+          <div
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            onClick={closeWantToTravel}
+          />
+
+          {/* modal card */}
+          <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 shadow-2xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8">
+            <button
+              onClick={closeWantToTravel}
+              className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {wantToTravelStatus === 'success' ? (
+              <div className="text-center py-6">
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
+                  Thank you!
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+                  We've received your details. Our travel team will reach out to you shortly.
+                </p>
+                <button
+                  onClick={closeWantToTravel}
+                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 text-white text-sm font-medium rounded-full shadow-lg shadow-sky-500/30 hover:shadow-xl transition-all duration-300"
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <>
+                <h3
+                  id="want-to-travel-title"
+                  className="text-xl font-semibold text-slate-800 dark:text-white mb-1"
+                >
+                  Want to Travel?
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+                  Share your details and we'll get in touch to plan your trip.
+                </p>
+
+                <form onSubmit={handleWantToTravelSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label
+                        htmlFor="wtt-first-name"
+                        className="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5"
+                      >
+                        First Name
+                      </label>
+                      <input
+                        id="wtt-first-name"
+                        name="firstName"
+                        type="text"
+                        required
+                        value={wantToTravelForm.firstName}
+                        onChange={handleWantToTravelChange}
+                        className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                        placeholder="John"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="wtt-last-name"
+                        className="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5"
+                      >
+                        Last Name
+                      </label>
+                      <input
+                        id="wtt-last-name"
+                        name="lastName"
+                        type="text"
+                        required
+                        value={wantToTravelForm.lastName}
+                        onChange={handleWantToTravelChange}
+                        className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                        placeholder="Doe"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="wtt-mobile"
+                      className="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5"
+                    >
+                      Mobile No.
+                    </label>
+                    <input
+                      id="wtt-mobile"
+                      name="mobile"
+                      type="tel"
+                      required
+                      value={wantToTravelForm.mobile}
+                      onChange={handleWantToTravelChange}
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      placeholder="+91 98765 43210"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="wtt-email"
+                      className="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5"
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="wtt-email"
+                      name="email"
+                      type="email"
+                      required
+                      value={wantToTravelForm.email}
+                      onChange={handleWantToTravelChange}
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      placeholder="john@example.com"
+                    />
+                  </div>
+
+                  {wantToTravelStatus === 'error' && (
+                    <p className="text-sm text-red-500">
+                      Something went wrong. Please try again.
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={wantToTravelStatus === 'submitting'}
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white text-sm font-medium rounded-full shadow-lg shadow-sky-500/30 hover:shadow-xl hover:shadow-sky-500/40 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {wantToTravelStatus === 'submitting' ? 'Submitting...' : 'Submit'}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
