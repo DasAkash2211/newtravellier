@@ -9,6 +9,7 @@ const footerLinks = {
     'North America',
     'South America',
     'Australia & Oceania',
+    'Antarctica',
   ],
   company: [
     { label: 'Why Us', path: '/why-us' },
