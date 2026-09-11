@@ -24,6 +24,7 @@ import AdminNewsletter from './pages/admin/AdminNewsletter';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminTravelUpdates from './pages/admin/AdminTravelUpdates';
 import TravelUpdates from './pages/TravelUpdates';
+import FAQ from './pages/FAQ';
 
 function HomePage() {
   return (
@@ -89,6 +90,16 @@ function App() {
                   <>
                     <Navigation />
                     <TravelUpdates />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/faq"
+                element={
+                  <>
+                    <Navigation />
+                    <FAQ />
                     <Footer />
                   </>
                 }
