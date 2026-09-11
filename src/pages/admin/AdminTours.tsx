@@ -30,15 +30,28 @@ interface Tour {
   highlights: string[];
   included: string[];
   best_time: string;
+  service_type: string;
   is_active: boolean;
   sort_order: number;
   tour_days?: TourDay[];
 }
 
+const SERVICE_TYPES = [
+  'Bespoke Leisure Groups',
+  'Ready to Join Groups',
+  'Customized Holidays',
+  'Speciality Groups',
+  'India Inbound',
+  'Flights',
+  'Visa Assist',
+  'Insurance',
+  'Forex',
+];
+
 const emptyTour = {
   slug: '', name: '', destination: '', country: '', duration: '',
   price: 0, rating: 4.5, reviews: 0, image: '', highlights: [] as string[],
-  included: [] as string[], best_time: '', is_active: true, sort_order: 0,
+  included: [] as string[], best_time: '', service_type: SERVICE_TYPES[0], is_active: true, sort_order: 0,
 };
 
 const emptyDay: Omit<TourDay, 'id' | 'tour_id'> = {
@@ -102,8 +115,8 @@ export default function AdminTours() {
       slug, name: editingTour.name, destination: editingTour.destination, country: editingTour.country,
       duration: editingTour.duration, price: editingTour.price, rating: editingTour.rating,
       reviews: editingTour.reviews, image: editingTour.image, highlights: editingTour.highlights,
-      included: editingTour.included, best_time: editingTour.best_time, is_active: editingTour.is_active,
-      sort_order: editingTour.sort_order,
+      included: editingTour.included, best_time: editingTour.best_time, service_type: editingTour.service_type,
+      is_active: editingTour.is_active, sort_order: editingTour.sort_order,
     };
 
     let tourId = editingTour.id;
@@ -184,6 +197,14 @@ export default function AdminTours() {
                 <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tour Name</label>
                   <input value={editingTour.name} onChange={(e) => updateField('name', e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-500 outline-none" placeholder="e.g. Bali Paradise Escape" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Service Type</label>
+                  <select value={editingTour.service_type} onChange={(e) => updateField('service_type', e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-500 outline-none">
+                    {SERVICE_TYPES.map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Destination</label>
@@ -281,6 +302,9 @@ export default function AdminTours() {
               {editingTour.image && <img src={editingTour.image} alt={editingTour.name} className="w-full h-40 object-cover rounded-xl mb-4" />}
               <h3 className="font-bold text-slate-900 dark:text-white">{editingTour.name || 'Tour Name'}</h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{editingTour.destination || 'Destination'}, {editingTour.country || 'Country'}</p>
+              <span className="inline-block mt-2 px-2.5 py-1 rounded-full text-xs font-medium bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400">
+                {editingTour.service_type}
+              </span>
               <div className="flex items-center gap-2 mt-2">
                 <span className="text-emerald-600 dark:text-emerald-400 font-bold text-lg">₹{editingTour.price.toLocaleString()}</span>
               </div>
@@ -341,6 +365,7 @@ export default function AdminTours() {
               <thead>
                 <tr className="border-b border-slate-100 dark:border-slate-700">
                   <th className="text-left px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Tour</th>
+                  <th className="text-left px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Service Type</th>
                   <th className="text-left px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Destination</th>
                   <th className="text-left px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Price</th>
                   <th className="text-left px-6 py-4 text-sm font-semibold text-slate-600 dark:text-slate-300">Status</th>
@@ -358,6 +383,11 @@ export default function AdminTours() {
                           <p className="text-sm text-slate-500 dark:text-slate-400">{tour.duration}</p>
                         </div>
                       </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400">
+                        {tour.service_type || '—'}
+                      </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">{tour.destination}, {tour.country}</td>
                     <td className="px-6 py-4 text-sm font-medium text-slate-900 dark:text-white">₹{tour.price.toLocaleString()}</td>
