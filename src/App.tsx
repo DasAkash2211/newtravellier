@@ -25,6 +25,7 @@ import AdminSettings from './pages/admin/AdminSettings';
 import AdminTravelUpdates from './pages/admin/AdminTravelUpdates';
 import TravelUpdates from './pages/TravelUpdates';
 import FAQ from './pages/FAQ';
+import ServiceTours from './pages/ServiceTours';
 
 function HomePage() {
   return (
@@ -100,6 +101,16 @@ function App() {
                   <>
                     <Navigation />
                     <FAQ />
+                    <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/services/:slug"
+                element={
+                  <>
+                    <Navigation />
+                    <ServiceTours />
                     <Footer />
                   </>
                 }
