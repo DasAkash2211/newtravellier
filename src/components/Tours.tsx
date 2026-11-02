@@ -119,9 +119,9 @@ function TourCard({ tour, index, isVisible }: { tour: Tour; index: number; isVis
             <span className="text-xs font-bold text-white">{tour.rating}</span>
           </div>
 
-          <div className="absolute bottom-4 right-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full shadow-lg">
+          {/* <div className="absolute bottom-4 right-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full shadow-lg">
             <span className="text-white font-bold">₹{tour.price.toLocaleString()}</span>
-          </div>
+          </div> */}
         </div>
 
         <div className="p-5">
