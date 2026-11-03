@@ -364,9 +364,9 @@ function BookingCard({ tour }: { tour: Tour }) {
     <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
       <div className="p-6 bg-gradient-to-r from-sky-500 to-blue-600">
         <div className="flex items-end gap-2 mb-2">
-          <span className="text-white/80 text-lg">From</span>
-          <span className="text-4xl font-bold text-white">₹{tour.price.toLocaleString()}</span>
-          <span className="text-white/80">/person</span>
+          {/* <span className="text-white/80 text-lg">From</span> */}
+          {/* <span className="text-4xl font-bold text-white">₹{tour.price.toLocaleString()}</span> */}
+          {/* <span className="text-white/80">/person</span> */}
         </div>
         <p className="text-sky-100 text-sm">Starting price, flights included</p>
       </div>
