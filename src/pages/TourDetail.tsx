@@ -165,7 +165,7 @@ export default function TourDetail() {
                 {[
                   { icon: Calendar, label: 'Best Time', value: tour.best_time },
                   { icon: Clock, label: 'Duration', value: tour.duration },
-                  { icon: Users, label: 'Group Size', value: 'Max 16' },
+                  { icon: Users, label: 'Group Size', value: 'Max 10' },
                   { icon: MapPin, label: 'Destination', value: tour.destination },
                 ].map((item) => (
                   <div
